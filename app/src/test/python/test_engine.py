@@ -1,4 +1,14 @@
+import sys
 import unittest
+from pathlib import Path
+
+# unittest adds this test directory to sys.path, but the application module lives
+# in app/src/main/python. Resolve it from this file so tests work even when the
+# workflow does not set PYTHONPATH.
+PYTHON_SOURCE_DIR = Path(__file__).resolve().parents[2] / "main" / "python"
+if not PYTHON_SOURCE_DIR.is_dir():
+    raise RuntimeError(f"Python application source directory not found: {PYTHON_SOURCE_DIR}")
+sys.path.insert(0, str(PYTHON_SOURCE_DIR))
 
 import nexaplay_engine as engine
 
